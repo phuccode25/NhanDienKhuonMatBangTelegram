@@ -1,0 +1,41 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environments
+.venv/
+.venv1/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dữ liệu ảnh khuôn mặt + cảnh báo
+faces/*
+alerts/*
+!faces/.gitkeep
+!alerts/.gitkeep
+
+# Model nặng
+*.pt
+*.pth
+*.h5
+*.onnx
+
+# Logs / temp
+*.log
+*.tmp
+*.cache/
+logs/
+output/
+runs/
+checkpoints/
+dataset/
