@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Intruder System – Face Recognition</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1f2937, #020617);
+            color: #e5e7eb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .card {
+            background: rgba(15, 23, 42, 0.92);
+            border-radius: 18px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+            padding: 24px 28px;
+            max-width: 960px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
+            gap: 24px;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+        .header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .title {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+        .badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(52, 211, 153, 0.5);
+            background: rgba(5, 150, 105, 0.2);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #bbf7d0;
+        }
+        .subtitle {
+            grid-column: 1 / -1;
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 10px;
+        }
+        .video-wrapper {
+            background: radial-gradient(circle at top, #0f172a, #020617);
+            border-radius: 14px;
+            padding: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-wrapper::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background: conic-gradient(from 180deg, rgba(56,189,248,0.25), transparent, rgba(52,211,153,0.25), transparent);
+            opacity: 0.35;
+            filter: blur(40px);
+            z-index: 0;
+        }
+        .video {
+            position: relative;
+            z-index: 1;
+            max-width: 100%;
+            border-radius: 10px;
+            border: 2px solid rgba(56, 189, 248, 0.6);
+        }
+        .stats {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            font-size: 14px;
+        }
+        .stat-card {
+            background: rgba(15, 23, 42, 0.9);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+        .stat-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+        .stat-value {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(37, 99, 235, 0.15);
+            color: #bfdbfe;
+            margin-top: 6px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #22c55e;
+            box-shadow: 0 0 8px #22c55e;
+        }
+        .footer {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+        @media (max-width: 800px) {
+            .card {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <div class="title">Hệ thống nhận diện khuôn mặt gửi về telegram</div>
+        <div class="badge">Live Demo • Face Recognition</div>
+    </div>
+
+    <div class="subtitle">
+        Stream trực tiếp từ camera, dùng model LBPH &amp; YOLO để phát hiện người và nhận diện khuôn mặt.
+    </div>
+
+    <div class="video-wrapper">
+        <!-- Đây là chỗ show camera -->
+        <img class="video" src="{{ url_for('video_feed') }}" alt="Video stream">
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-title">Trạng thái hệ thống</div>
+            <div class="stat-value">
+                Hệ thống đang chạy
+                <span class="pill"><span class="dot"></span> Streaming</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Chức năng</div>
+            <div class="stat-value">
+                • Nhận diện người quen / người lạ<br>
+                • Gửi cảnh báo qua Telegram khi phát hiện kẻ xâm nhập<br>
+                • Model khuôn mặt được huấn luyện bằng tập dữ liệu riêng
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Ghi chú demo</div>
+            <div class="stat-value">
+                Tất cả xử lý AI chạy trên laptop này. Người ở xa có thể truy cập qua đường link ngrok để xem
+                real-time.
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>Built with Python · OpenCV · YOLO · Flask</span>
+        <span>Demo project – {{ request.remote_addr or 'local' }}</span>
+    </div>
+</div>
+</body>
+</html>
